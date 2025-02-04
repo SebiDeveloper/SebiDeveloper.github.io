@@ -66,8 +66,17 @@ const useMarvelService = () => {
 		return res.data.results.map(_transformComics);
 	};
 
-	const getComics = async (id) => {
+	const getComic = async (id) => {
+		if (!id) {
+			throw new Error("Invalid comic ID provided");
+		}
+	
 		const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
+	
+		if (!res.data.results.length) {
+			throw new Error("404");
+		}
+	
 		return _transformComics(res.data.results[0]);
 	};
 
@@ -109,7 +118,7 @@ const useMarvelService = () => {
 		getAllCharacters,
 		getCharacter,
 		getAllComics,
-		getComics,
+		getComic,
 	};
 };
 
